@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Analysis</title>
+    <style>
+        input {
+            margin-bottom: 15px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            border: 1px solid #4CAF50;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #e8f5e9;
+        }
+        h2, h3 {
+            margin-bottom: 10px;
+        }
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+        .advice-item {
+            margin-bottom: 10px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enter Farmer Data for Suicide Risk Prediction</h1>
+    <form method="POST" action="{% url 'analyze_risk' %}">
+        {% csrf_token %}
+        
+        <label for="loan_irregular">Loan Repayment Status - Irregular:</label>
+        <input type="number" name="loan_irregular" id="loan_irregular" required>
+        
+        <label for="loan_missed">Loan Repayment Status - Missed Payments:</label>
+        <input type="number" name="loan_missed" id="loan_missed" required>
+        
+        <label for="crop_reduced">Crop Purchase Pattern - Reduced Purchases:</label>
+        <input type="number" name="crop_reduced" id="crop_reduced" required>
+        
+        <label for="weather_low">Weather Impact Score - Low:</label>
+        <input type="number" name="weather_low" id="weather_low" required>
+        
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if prediction is not None %}
+    <div class="result">
+        <h2>Suicide Risk Analysis Result</h2>
+        <p><strong>Suicide Risk Prediction:</strong> {{ prediction }}</p>
+        
+        <h3>LLaMA Insights</h3>
+        <p>Based on the analysis of the provided data, here are some insights:</p>
+        
+        <h3>Input Descriptions:</h3>
+        <ul>
+            {% for key, description in input_descriptions.items %}
+                <li><strong>{{ key|title }}:</strong> {{ description }}</li>
+            {% endfor %}
+        </ul>
+        
+        <h3>Advice to Overcome Stress:</h3>
+        <ul>
+            {% for item in advice %}
+                <li class="advice-item">{{ item }}</li>
+            {% endfor %}
+        </ul>
+        
+        <button onclick="window.location.reload();">Analyze Another Farmer</button>
+    </div>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Container for the page content */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Page title style */
+.page-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* List of scheme cards */
+.scheme-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between cards */
+}
+
+/* Individual scheme card */
+.scheme-card {
+    background: white;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+/* Scheme card hover effect */
+.scheme-card:hover {
+    transform: scale(1.02);
+}
+
+/* Scheme name style */
+.scheme-name {
+    margin: 0;
+    font-size: 18px;
+    color: #007bff; /* Bootstrap primary color */
+}
+
+/* Message for no schemes available */
+.no-schemes-message {
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+</style>
+<div class="container">
+    <h1 class="page-title">Government Schemes for Farmers</h1>
+
+    {% if schemes %}
+        <div class="scheme-list">
+            {% for scheme in schemes %}
+                <div class="scheme-card">
+                    <h2 class="scheme-name">{{ scheme.name }}</h2>
+                    <div class="scheme-details">
+                        <p><strong>Description:</strong> {{ scheme.description }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-schemes-message">No government schemes available at the moment.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

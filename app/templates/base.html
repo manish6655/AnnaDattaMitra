@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AnnadattaMitra - AI Agriculture Platform{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="https://www.shutterstock.com/image-vector/farmer-working-on-field-vector-260nw-2194804755.jpg" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Ensure the body and html occupy the full height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Flexbox layout to push footer to the bottom */
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main section takes available space */
+        main {
+            flex: 1;  /* Ensures it stretches to fill the space */
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #2e3950;
+        }
+
+        /* Navigation Styles */
+        .nav-link {
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #fbbf24; /* Tailwind yellow-400 */
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-menu {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+                flex-direction: column;
+                background-color: #065f46; /* Tailwind teal-800 */
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 100%;
+                padding: 1rem;
+                border-radius: 0 0 8px 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            }
+        }
+    </style>
+</head>
+
+<body class="font-poppins bg-gray-100">
+
+    <!-- Header Section -->
+    <header class="bg-green-700 text-white py-4 px-8 flex justify-between items-center shadow-lg">
+        <a href="/" class="text-2xl font-bold">AnnadattaMitra</a>
+        <button id="mobile-menu-button" class="md:hidden text-3xl focus:outline-none" aria-label="Toggle menu">&#9776;</button>
+        <nav class="desktop-menu hidden md:flex space-x-4">
+            {% if user.is_authenticated %}
+            <a href="/farmproduct" class="nav-link hover:underline">Marketplace </a>
+            <a href="{% url 'dashboard' %}" class="nav-link hover:underline">Dashboard</a>
+            <a href="/schemes" class="nav-link hover:underline">Gov Scheme</a>
+            <a href="/chatbot" class="nav-link hover:underline">FarmBot </a>
+            <a href="/recommendations" class="nav-link hover:underline">Plant Planner</a>
+            <a href="/analyze" class="nav-link hover:underline">Mental Health Analyze</a>
+            <a href="/weather" class="nav-link hover:underline">Climate Update</a>
+            <a href="/chat" class="nav-link hover:underline">Community Group</a>
+            
+            <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="nav-link hover:underline">Logout</button>
+            </form>
+            {% else %}
+            <a href="{% url 'farmproduct' %}" class="nav-link hover:underline">Marketplace</a>
+                <a href="{% url 'register' %}" class="nav-link hover:underline">Register</a>
+                <a href="{% url 'login' %}" class="nav-link hover:underline">Login</a>
+            {% endif %}
+        </nav>
+        <nav id="mobile-menu" class="mobile-menu hidden">
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="nav-link hover:underline">Dashboard</a>
+            <a href="/farmproduct" class="nav-link py-2">Marketplace</a>
+            {% endif %}
+            <a href="/farmproduct" class="nav-link py-2">Marketplace</a>
+            <a href="#features" class="nav-link py-2">Features</a>
+            <a href="/chatbot" class="nav-link py-2">FarmBot </a>
+            {% if user.is_authenticated %}
+            <a href="/schemes" class="nav-link py-2">Gov Scheme</a>
+            <a href="/recommendations" class="nav-link hover:underline">Plant Planner</a>
+            <a href="/weather" class="nav-link hover:underline">Climate Update</a>
+            
+            <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="nav-link py-2">Logout</button>
+            </form>
+            {% else %}
+                <a href="{% url 'register' %}" class="nav-link py-2">Register</a>
+                <a href="{% url 'login' %}" class="nav-link py-2">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="py-16">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-green-700 text-white py-4 text-center">
+        <p>&copy; 2024 AnnadattaMitra. All rights reserved.</p>
+        <nav class="space-x-4 mt-2">
+            <a href="#" class="hover:underline">Privacy Policy</a>
+            <a href="#" class="hover:underline">Terms of Service</a>
+        </nav>
+    </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

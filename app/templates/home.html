@@ -1,0 +1,479 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - AnnadattaMitra{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* General Layout */
+  body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+  }
+
+  h1, h2, h3, p {
+      margin: 0;
+      padding: 0;
+  }
+
+  /* Hero Section */
+  .hero-section {
+      position: relative;
+      text-align: center;
+      background-image: url('{% static "images/six.jpg" %}');
+      background-size: cover;
+      background-position: center;
+      height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      padding: 0 20px;
+  }
+
+  .hero-section h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero-section p {
+      margin-top: 15px;
+      font-size: 1.3rem;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero-section button {
+      margin-top: 25px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      background-color: #ffc107;
+      color: #007bff;
+      border: none;
+      font-weight: 600;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+      cursor: pointer;
+  }
+
+  .hero-section button:hover {
+      background-color: #e0a800;
+      transform: scale(1.1);
+  }
+
+  /* Slogan Section */
+  .slogan-section {
+      background: linear-gradient(135deg, #38b24a, #007bff);
+      padding: 80px 20px;
+      text-align: center;
+      color: white;
+      font-size: 2.2rem;
+      font-weight: 600;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Testimonial Section */
+  .testimonial-section {
+      background-color: #ffffff;
+      padding: 60px 20px;
+      text-align: center;
+  }
+
+  .testimonial-container {
+      max-width: 800px;
+      margin: auto;
+      position: relative;
+  }
+
+  .testimonial-slide {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+  }
+
+  .testimonial {
+      flex: 1;
+      padding: 20px;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: #555;
+  }
+
+  .testimonial small {
+      display: block;
+      margin-top: 5px;
+      font-weight: 600;
+      color: #777;
+  }
+
+  /* Slider Controls */
+  .slider-buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+  }
+
+  .slider-button {
+      width: 12px;
+      height: 12px;
+      background-color: #007bff;
+      margin: 0 6px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+
+  .slider-button.active {
+      background-color: #38b24a;
+  }
+
+  /* Icon Section */
+  .content-section {
+      text-align: center;
+      padding: 60px 20px;
+  }
+
+  .content-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #333;
+  }
+
+  .content-section p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      color: #666;
+  }
+
+  .icon-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+  }
+
+  .icon-item {
+      width: 20%;
+      min-width: 150px;
+      text-align: center;
+  }
+
+  .icon-circle {
+      width: 70px;
+      height: 70px;
+      background-color: #007bff;
+      margin: 0 auto;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2rem;
+      margin-bottom: 15px;
+  }
+
+  .color-name {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+  }
+
+  .description {
+      color: #777;
+      font-size: 1rem;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+      .hero-section h1 {
+          font-size: 2.5rem;
+      }
+
+      .hero-section p {
+          font-size: 1.2rem;
+      }
+
+      .icon-item {
+          width: 45%;
+      }
+
+      .slogan-section {
+          font-size: 1.8rem;
+      }
+  }
+</style>
+<!-- JavaScript for Testimonial Slider -->
+<script>
+  let currentSlide = 0;
+
+  function showTestimonial(index) {
+      const slide = document.getElementById('testimonialSlide');
+      const buttons = document.querySelectorAll('.slider-button');
+      slide.style.transform = `translateX(-${index * 100}%)`;
+      buttons.forEach(btn => btn.classList.remove('active'));
+      buttons[index].classList.add('active');
+      currentSlide = index;
+  }
+
+  setInterval(() => {
+      currentSlide = (currentSlide + 1) % 2;
+      showTestimonial(currentSlide);
+  }, 5000);
+</script>
+<div class="chat-icon" id="chat-icon">
+  <i class="fas fa-comment-dots"></i>
+</div>
+
+<div class="chat-window" id="chat-window">
+  <div class="chat-header">Chatbot</div>
+  <div class="chat-body" id="chat-body">
+      <p>Hello! How can I help you?</p>
+  </div>
+  <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type a message...">
+      <button id="send-button">Send</button>
+  </div>
+</div>
+
+<script>
+  const chatIcon = document.getElementById('chat-icon');
+  const chatWindow = document.getElementById('chat-window');
+  const sendButton = document.getElementById('send-button');
+  const userInput = document.getElementById('user-input');
+  const chatBody = document.getElementById('chat-body');
+
+  // Toggle chat window visibility
+  chatIcon.onclick = () => {
+      chatWindow.style.display = chatWindow.style.display === 'none' || chatWindow.style.display === '' ? 'flex' : 'none';
+  };
+
+  // Function to send message
+  function sendMessage() {
+      const message = userInput.value.trim();
+      if (message) {
+          const userMessage = document.createElement('p');
+          userMessage.textContent = message;
+          userMessage.style.textAlign = 'right'; // Align user messages to the right
+          chatBody.appendChild(userMessage);
+          userInput.value = '';
+
+          // Call the function to get the chatbot response
+          getChatbotResponse(message);
+      }
+  }
+
+  // Basic chatbot response logic
+  function getChatbotResponse(userMessage) {
+      let response;
+      // Basic responses based on keywords
+      if (userMessage.toLowerCase().includes("hello")) {
+          response = "Hi there! How can I assist you today?";
+      } else if (userMessage.toLowerCase().includes("loan")) {
+          response = "We have various loan schemes available for farmers. Would you like to know more?";
+      } else {
+          response = "I'm sorry, I didn't understand that. Can you please rephrase?";
+      }
+
+      const botMessage = document.createElement('p');
+      botMessage.textContent = response;
+      botMessage.style.textAlign = 'left'; // Align bot messages to the left
+      chatBody.appendChild(botMessage);
+  }
+
+  // Send message on button click
+  sendButton.onclick = sendMessage;
+
+  // Send message on pressing Enter key
+  userInput.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+          sendMessage();
+          event.preventDefault(); // Prevent form submission if inside a form
+      }
+  });
+</script>
+<style>
+  .chat-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 50%;
+        padding: 15px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        z-index: 9999;
+    }
+
+    .chat-window {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 400px;
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        display: none;
+        flex-direction: column;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-top: 10px;
+        z-index: 9999;
+    }
+    .backgroun-image {
+        position: relative;
+        text-align: end;
+    }
+
+    .logo-image {
+        width: 38%;
+        border-radius: 20px;
+        margin-left: 55%;
+        transition: opacity 1s ease;
+    }
+
+    .image {
+        height: 70vh;
+        width: 100%;
+    }
+
+    .image h1 {
+        text-align: center;
+        top: 20vh;
+        position: relative;
+        right: 20rem;
+        font-size: 2rem;
+    }
+
+    .image h1 span {
+        color: red;
+    }
+
+    .peragraf {
+        position: absolute;
+        margin-top: 150px;
+        display: flex;
+        left: 20rem;
+        width: 28%;
+        font-size: x-small;
+    }
+
+    .register-button {
+        border: 2px solid black;
+        border-radius: 10px;
+        padding: 10px;
+        position: absolute;
+        margin-top: 210px;
+        left: 20rem;
+      }
+    .chat-header {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .chat-body {
+        padding: 20px;
+        height: 60vh;
+        overflow-y: auto;
+    }
+
+    .chat-input {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        border-top: 1px solid #ccc;
+    }
+
+    .chat-input input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+    }
+
+    .chat-input button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        }
+</style>
+<section class="relative py-44 px-6 text-center bg-cover bg-center bg-no-repeat" style="background-image: url('{% static 'images/six.jpg' %}');">
+  <div class="absolute inset-0 bg-black opacity-40"></div>
+  <div class="relative z-10 max-w-2xl mx-auto text-white">
+      <h1 class="text-4xl md:text-6xl font-bold leading-tight">Empower Farmers with AI-Driven Insights</h1>
+      <p class="mt-4 text-lg md:text-xl">Real-time market trends, crop advice, and direct access to buyers.</p>
+      <button class="mt-6 bg-yellow-400 text-green-800 px-6 py-3 text-lg font-bold rounded hover:bg-yellow-300">
+          Explore Platform
+      </button>
+  </div>
+</section>
+
+<!-- Content Section -->
+<div class="content-section">
+    <h2>Welcome to Annadatta Mitra</h2>
+    <p>Your trusted platform for farming solutions, crop recommendations, weather forecasts, and mental well-being.</p>
+
+    <div class="icon-container">
+        <div class="icon-item">
+            <div class="icon-circle">
+                <i class="fas fa-tractor"></i>
+            </div>
+            <p class="color-name">Farming</p>
+            <p class="description">List and sell products directly to consumers and markets.</p>
+        </div>
+        <div class="icon-item">
+            <div class="icon-circle">
+                <i class="fas fa-seedling"></i>
+            </div>
+            <p class="color-name">Planting</p>
+            <p class="description">Get crop recommendations based on your location.</p>
+        </div>
+        <div class="icon-item">
+            <div class="icon-circle">
+                <i class="fas fa-cloud-sun"></i>
+            </div>
+            <p class="color-name">Weather</p>
+            <p class="description">Stay ahead with 7-day weather forecasts.</p>
+        </div>
+        <div class="icon-item">
+            <div class="icon-circle">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <p class="color-name">Mental Health</p>
+            <p class="description">Access mental health support and connect with experts.</p>
+        </div>
+    </div>
+</div>
+<script>
+  // JavaScript for changing images
+  const images = [
+      "{% static 'images/first.jpg' %}",
+      "{% static 'images/second.jpg' %}",
+      "{% static 'images/third.jpg' %}",
+      "{% static 'images/fourth.jpg' %}",
+      "{% static 'images/fifth.jpg' %}",
+  ];
+  
+  let currentIndex = 0;
+  const logoImage = document.getElementById('logoImage');
+
+  setInterval(() => {
+      currentIndex = (currentIndex + 1) % images.length;
+      logoImage.style.opacity = 0; // Fade out
+      setTimeout(() => {
+          logoImage.src = images[currentIndex]; // Change image
+          logoImage.style.opacity = 1; // Fade in
+      }, 500); // Duration of fade-out
+  }, 3000); // Change image every 3 seconds
+</script>
+{% endblock %}
